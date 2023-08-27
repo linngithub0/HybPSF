@@ -1,0 +1,42 @@
+erase
+data box_test4M.d
+     lines 1 5
+read xbf 1
+read ybf 2
+     lines 6 11
+read xb50 1
+read yb50 2
+data test4M.d
+lines 2 89000
+read x 2
+read y 3
+read FWHM 4
+read r50  5
+read flux 6
+
+!data R50cut.d
+!read xs 2
+!read ys 3
+!read FWHMs 4
+!read r50s  5
+!read fluxs 6
+
+set flux=-2.5*lg(flux)
+      limits -20 -5 1 20
+      !set fluxf=flux-2
+      set xbf=xbf
+ctype black
+      expand 1
+box
+points flux r50
+ctype red
+points flux FWHM
+!ctype red
+!points fluxs r50s
+       ctype blue
+connect xbf ybf
+connect xb50 yb50
+ctype black
+expand 1.5
+xlabel mag
+ylabel FWHM(pixel)
