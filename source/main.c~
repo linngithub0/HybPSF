@@ -1,0 +1,336 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include "nrutil.h"
+int main(int argc,char *argv[])
+{
+  int get_fits_size(char *argv,int *dim);
+  int write_fits_2D(char *argv,float **stars,int *dim);
+  int write_fits_3D(char *argv,float ***stars,int *dim);
+  int read_fits_2D(char *argv,float *galaxy,int imagesize);
+  void starbox(float *flux,float *size1,float **box1,
+	       float *size2,float **box,int Ntotal,char *boxname);
+  void trous_decomp(double **I0,double ***w,double **cJ,int nx,int ny,int J);
+  double k_sigma(double **data,int nx,int ny);
+  char* itoa(int num,char *str,int radix);
+  float **pos,*FWHM,*R50,*RMS,*flux,*class;
+  float minx,maxx,min50,max50,minf,maxf,x,y,yf,y50,**box50,**boxf;
+  float *image0,**image,***Stars;
+  double **stamp,***wij,**cJ;
+  int *flag,J=3,ir,is;
+  int Ntotal,Nstar,i,j,ix,iy,m,n,k,Npix=21,nt,nimgx,nimgy,imgsize,Nh,dim[3];
+  char *fhead="/Users/Shared/LSST/Data/imSim/sheared/maskeds0/";
+  char *fmid0="R43/",*cend="output",fmid[20],fmid1[9][20];
+  char head0[99],fname0[99],fnames[99],fnamel[99],fnameln[99],fbox[99],ctmp[99],
+    flist0[99],fgalaxy[99],ffix[99]; 
+  FILE *fp;
+  box50=matrix(0,1,0,1);boxf=matrix(0,1,0,1);//R50 & FWHM
+
+  if(argc!=6){
+    printf("parameter input error\n");
+    printf("should be arranged as\n:");
+    printf("%s <raw cata file path> <input cata name> <fits path> <input fitsname> <output path>\n",
+      argv[0]);
+    exit(EXIT_FAILURE);
+  }
+
+  strcpy(flist0,argv[1]);strcat(flist0,argv[2]);  //input catalogue
+  strcpy(fname0,argv[3]);strcat(fname0,argv[4]);//input fits file
+  strcpy(fnames,argv[5]);strcat(fnames,"star_stamps/");//output star stamps
+  strcpy(fnamel,argv[5]);strcat(fnamel,"star/");//output star list
+  strcpy(fnameln,argv[5]);strcat(fnameln,"source/");//output source catalogue
+  strcpy(fbox,argv[5]);strcat(fbox,"box/");//output starbox
+  
+
+  strcat(fnames,argv[4]);
+  strcat(fnamel,argv[4]);
+  strcat(fnameln,argv[4]);
+  strcat(fbox,argv[4]);
+  
+
+  strcpy(ffix,".fits");
+  strcat(fnames,ffix);
+  strcpy(ffix,".d");
+  strcat(fnamel,ffix);
+  strcat(fnameln,ffix);
+  strcat(fbox,ffix);
+
+  //printf("%s\t%s\t%s\t%s\t%s\t%s\n",flist0,fname0,fnames,fnameln,fnameln,fbox );
+  
+  
+  minx=boxf[0][0]=box50[0][0]=-15.;maxx=boxf[1][0]=box50[1][0]=-10.;//left & right
+  boxf[0][1]=2;box50[0][1]=1;//bottom
+  stamp=dmatrix(0,Npix-1,0,Npix-1);
+  cJ   =dmatrix(0,Npix-1,0,Npix-1);
+  wij  =d3tensor(0,J-1,0,Npix-1,0,Npix-1);
+
+  fp=fopen(flist0,"r");printf("%s\n",flist0 );
+  if(fp==NULL)printf("NULL\n");
+  k=1;
+  while(k!=0){
+    fscanf(fp,"%s\n",ctmp); 
+    k=strcmp(ctmp,cend);  }
+  do{fscanf(fp,"%d %e %e %e %e %e %e %d %e\n",&i,&x,&x,&x,&x,&x,&x,&j,&x); 
+  }while(!feof(fp));
+  fclose(fp);
+  Ntotal=i;
+  pos   =matrix(0,Ntotal-1,0,1);
+  FWHM  =vector(0,Ntotal-1);
+  R50   =vector(0,Ntotal-1);
+  RMS   =vector(0,Ntotal-1);
+  flux  =vector(0,Ntotal-1);
+  class =vector(0,Ntotal-1);
+  flag  =ivector(0,Ntotal-1);
+  
+
+
+
+  k=0;
+  fp=fopen(flist0,"r");
+  k=1;
+  while(k!=0){
+    fscanf(fp,"%s\n",ctmp); 
+    k=strcmp(ctmp,cend);
+  }
+  for(i=0;i<Ntotal;i++){
+    fscanf(fp,"%d %e %e %e %e %e %e %d %e\n",&j,&pos[i][0],&pos[i][1],
+            &FWHM[i],&R50[i],&flux[i],&RMS[i],&flag[i],&class[i]);  
+    //printf("%d %e %e %e %e %e %e %d %e\n",j,pos[i][0],pos[i][1],
+            //FWHM[i],R50[i],flux[i],RMS[i],flag[i],class[i]); 
+    if(flux[i]>0 & FWHM[i]>0 & R50[i]>0){
+      pos[k][0]=pos[i][0];
+      pos[k][1]=pos[i][1];
+      R50[k]=R50[i];
+      FWHM[k]=FWHM[i];
+      flux[k]=flux[i];
+      RMS[k]=RMS[i];
+      flag[k]=flag[i];
+      class[k]=class[i];
+      k++;
+    }
+  }
+  fclose(fp);
+  
+  Ntotal=k;
+  fopen(fnameln,"w");
+  //fprintf(fp,"%d\n",Ntotal);
+  for(i=0;i<Ntotal;i++)
+    fprintf(fp,"%d\t%e\t%e\t%e\t%e\t%e\t%e\t%d\t%e\n",i,pos[i][0],pos[i][1],FWHM[i],
+	    R50[i],flux[i],RMS[i],flag[i],class[i]);
+  fclose(fp);
+  
+  starbox(flux,FWHM,boxf,R50,box50,Ntotal,fbox);
+  minf=boxf[0][1];maxf=boxf[1][1];
+  min50=box50[0][1];max50=box50[1][1];
+  
+  k=0;
+  for(i=0;i<Ntotal;i++){
+    x=-2.5*log10(flux[i]);yf=FWHM[i],y50=R50[i];
+    if(x>minx & x<maxx & yf>minf & yf<maxf & y50>min50 & y50<max50){
+      pos[k][0]=pos[i][0];
+      pos[k][1]=pos[i][1];
+      R50[k]=R50[i];
+      FWHM[k]=FWHM[i];
+      flux[k]=flux[i];
+      RMS[k]=RMS[i];
+      k++;
+    }
+  }
+  Nstar=k;
+  printf("I found %d stars\n",Nstar);
+  if(Nstar==0){
+    printf("No star is found,change the window");
+    getchar();
+  }
+  
+  get_fits_size(fname0,dim);
+  nimgx=dim[0];nimgy=dim[1];imgsize=nimgx*nimgy;
+  image0=vector(0,imgsize-1);
+  image=matrix(0,nimgx-1,0,nimgy-1);
+  Stars=f3tensor(0,Nstar-1,0,Npix-1,0,Npix-1);
+  read_fits_2D(fname0,image0,imgsize);
+  for(j=0;j<nimgy;j++){
+    for(i=0;i<nimgx;i++){k=j*nimgx+i;image[i][j]=image0[k];}
+  }
+  free_vector(image0,0,imgsize-1);
+  Nh=Npix/2.;
+  for(nt=0;nt<Nstar;nt++){
+    ix=pos[nt][0]+0.5;iy=pos[nt][1]+0.5; 
+    ix--;iy--;
+    for(j=0;j<Npix;j++){
+      for(i=0;i<Npix;i++){
+        m=ix+i-Nh;
+        n=iy+j-Nh;
+	if(m>=0 & m<nimgx & n>=0 & n<nimgy)
+        stamp[i][j]=Stars[nt][i][j]=image[m][n];
+	else stamp[i][j]=Stars[nt][i][j]=0;
+      }
+    }
+    trous_decomp(stamp,wij,cJ,Npix,Npix,J);
+    RMS[nt]=k_sigma(wij[0],Npix,Npix)/0.899;
+  }
+  dim[0]=dim[1]=Npix;dim[2]=Nstar;
+  write_fits_3D(fnames,Stars,dim);
+
+  fp=fopen(fnamel,"w");
+  //fprintf(fp,"%d\n",Nstar);
+  for(i=0;i<Nstar;i++)fprintf(fp,"%d\t%e\t%e\t%e\t%e\t%e\t%e\n",i,
+			      pos[i][0],pos[i][1],RMS[i],flux[i],FWHM[i],R50[i]);
+  fclose(fp);
+
+
+  free_dmatrix(stamp,0,Npix-1,0,Npix-1);
+  free_dmatrix(cJ,0,Npix-1,0,Npix-1);
+  free_d3tensor(wij,0,J-1,0,Npix-1,0,Npix-1);
+  free_matrix(pos,0,Ntotal-1,0,1);
+  free_vector(FWHM,0,Ntotal-1);
+  free_vector(RMS,0,Ntotal-1); 
+  free_vector(R50,0,Ntotal-1);
+  free_vector(flux,0,Ntotal-1);
+  free_vector(class,0,Ntotal-1);
+  free_ivector(flag,0,Ntotal-1);
+  free_matrix(image,0,nimgx-1,0,nimgy-1);
+  free_f3tensor(Stars,0,Nstar-1,0,Npix-1,0,Npix-1);
+  }
+
+
+void starbox(float *flux,float *size1,float **box1,
+	     float *size2,float **box2,int Ntotal,char *boxname)
+{
+  void k_sigma_1D(double *data,int np0,double *dms);
+  void sort(int n, float arr[]);
+  int i,j,k;
+  double minx,miny,maxx,maxy,x,y,w=3.,ktmp;
+  double *sizet,dms[2];
+  float *arr1,*arr2;
+  FILE *fp;
+
+  sizet=dvector(0,Ntotal);
+  arr1=vector(1,Ntotal);
+  arr2=vector(1,Ntotal);
+  
+  minx=box1[0][0];  
+  maxx=box1[1][0]-2.5;
+  k=0;
+  for(i=0;i<Ntotal;i++){
+    x=-2.5*log10(flux[i]);
+    if(x>minx & x<maxx ){k++;arr1[k]=size1[i],arr2[k]=size2[i];}
+  }
+  ktmp=k;
+  sort(ktmp,arr1);
+  sort(ktmp,arr2);
+  y=arr1[5];
+  miny=y-box1[0][1]*0.5;
+  maxy=y+box1[0][1]*0.5;
+  k=0;
+  for(i=0;i<ktmp;i++){
+    y=arr1[i+1];
+    if(y>miny & y<maxy ){sizet[k]=y;k++;}
+  }
+  k_sigma_1D(sizet,k,dms);
+  box1[0][1]=dms[0]-w*dms[1];
+  box1[1][1]=dms[0]+w*dms[1];
+ 
+  y=arr2[5];
+  miny=y-box2[0][1]*0.5;
+  maxy=y+box2[0][1]*0.5;
+  k=0;
+  for(i=0;i<ktmp;i++){
+    y=arr2[i+1];
+    if(y>miny & y<maxy ){sizet[k]=y;k++;}
+  }
+  k_sigma_1D(sizet,k,dms);
+  box2[0][1]=dms[0]-w*dms[1];
+  box2[1][1]=dms[0]+w*dms[1];
+ 
+  free_dvector(sizet,0,Ntotal);
+  free_vector(arr1,1,Ntotal);
+  free_vector(arr2,1,Ntotal);
+  fp=fopen(boxname,"w");
+  fprintf(fp,"%e %e\n",box1[0][0],box1[0][1]);
+  fprintf(fp,"%e %e\n",box1[0][0],box1[1][1]);
+  fprintf(fp,"%e %e\n",box1[1][0],box1[1][1]);
+  fprintf(fp,"%e %e\n",box1[1][0],box1[0][1]);
+  fprintf(fp,"%e %e\n",box1[0][0],box1[0][1]);
+  fprintf(fp,"%e %e\n",box2[0][0],box2[0][1]);
+  fprintf(fp,"%e %e\n",box2[0][0],box2[1][1]);
+  fprintf(fp,"%e %e\n",box2[1][0],box2[1][1]);
+  fprintf(fp,"%e %e\n",box2[1][0],box2[0][1]);
+  fprintf(fp,"%e %e\n",box2[0][0],box2[0][1]);
+  fclose(fp);
+
+}
+
+
+void k_sigma_1D(double *data,int np0,double *dms)
+{
+  void sigma_clean(double *data,double *r2,double *dms,int *np);
+  int i,j,m,n,k,ktotal,np[2];
+  double sum=0,dm,sigma,*r2,*d1,det,sigma2;
+  r2=dvector(0,np0);
+  d1=dvector(0,np0);
+  for(i=0;i<np0;i++)sum +=data[i];
+  dm=sum/(np0);
+  sum=0;
+  k=0;
+  for(i=0;i<np0;i++){
+      det=data[i]-dm;
+      r2[i]=det*det;
+      d1[i]=data[i];
+      sum +=r2[i];
+  }
+  ktotal=np0;
+  sigma=sqrt(sum/(np0-1));
+  //--------------------- m0
+  dms[0]=dm;dms[1]=sigma;np[0]=np[1]=ktotal;
+  k=0;
+  do {
+    np[0]=np[1];
+    sigma_clean(d1,r2,dms,np);
+    k++;
+  }while((np[0]!=np[1]) && k<5);
+ 
+  free_dvector(r2,0,np0);
+  free_dvector(d1,0,np0);
+ 
+}
+
+void CloseP(float **pos,float *flux,float *R50,int Ntotal,float **posgal,
+	    float *fluxgal,float *R50gal,float *SNgal,int *Ngal)
+{
+  int i,j,k,n0,*sign;
+  double x,y,detx,dety,r2,r,r50g,fluxg,nr=1.5,thres;
+  n0=*Ngal;
+  sign=ivector(0,n0);
+  for(i=0;i<n0;i++)sign[i]=1;
+  for(i=0;i<n0;i++){
+    x=posgal[i][0];
+    y=posgal[i][1];
+    r50g=R50gal[i]*nr;
+    fluxg=fluxgal[i]*0.1;
+    for(j=0;j<Ntotal;j++){
+      detx=x-pos[j][0];
+      dety=y-pos[j][1];
+      r2=detx*detx+dety*dety;
+      thres=r50g+R50[j]*nr;
+      thres=thres*thres;
+      if(r2>0.0001){
+	if(r2<thres)sign[i]=0; 
+      }
+    }
+  }
+  k=0;
+  for(i=0;i<n0;i++){
+    if(sign[i]==1){
+      posgal[k][0]=posgal[i][0];
+      posgal[k][1]=posgal[i][1];
+      fluxgal[k]  =fluxgal[i];
+      R50gal[k]   =R50gal[i];
+      SNgal[k]    =SNgal[i];
+      k++;
+    }
+  }
+  printf("k=%d\n",k);
+  *Ngal=k;
+}

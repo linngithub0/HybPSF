@@ -1,0 +1,22 @@
+#cfitsio library path, library name 
+FITSPATH=-L/usr/local/lib/
+FITSLIB=-lcfitsio
+FITSINCLUDE=-I/usr/local/include/
+
+# general include path
+INCLUDE=-I/usr/include
+
+#include objects here:
+objects = main.o fits_IO.o nrutil.o wavelet_Trous.o sort.o path_option.o SNRs.o fof_source.o
+
+cut:  $(objects) 
+	cc -O3 -o $@ $(objects) $(FITSPATH) $(FITSLIB) -lm
+# general compilation rules 
+
+.SUFFIXES:  .c   .o
+.c.o:
+	cc -c $< -O3 -o $@ $(INCLUDE) $(FITSINCLUDE) $(CURLINCLUDE)
+.PHONY:clean
+clean:
+	-rm $(objects)
+	-rm cut
