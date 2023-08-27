@@ -2,7 +2,8 @@
 This is PSF reconstruction code for JWST NIRCam image
 
 This is an introduction for compiling and preparing for this code
-you can just run: ./setup.sh, under the path in the command line
+first you need zunzip the fftw-3.3.10.zip and cfitsio-4.1.10.zip respectively
+and then you can just run: ./setup.sh, under the path in the command line
 and then see the example.py for the simple usage of the code
 
 the configure paramaters used to generate the catalogue are needed, which
