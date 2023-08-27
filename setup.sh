@@ -56,7 +56,7 @@ cp lib/libcfitsio.9.dylib ./
 
 
 
-cd source/staridf/
+cd staridf/
 echo "#cfitsio library path, library name" > Makefile
 echo "FITSPATH=-L"${dir}"/lib" >> Makefile
 echo "FITSLIB=-lcfitsio" >> Makefile
@@ -80,7 +80,7 @@ echo "clean:
 	-rm \${objects}" >> Makefile
 make clean
 make
-cp cut ../../
+cp cut ../
 
 
 
