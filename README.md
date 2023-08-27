@@ -10,6 +10,9 @@ the configure paramaters used to generate the catalogue are needed, which
 named "config.py", and these variables should be given by user.
 
 After this code are prepared, and the configure are ready, the the user can run:python gen_cat.py
+if you want to run gen_cat.py, you should configure the default.sex file with some parameters:
+PARAMETERS_NAME FILTER_NAME STARNNW_NAME respectively
+
 to generate the catalogue files, after the catalogue files are generated,then run: python example.py
 
 
