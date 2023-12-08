@@ -123,7 +123,7 @@ LONG_DESCRIPTION = 'create Point Spread Function (PSF) module for the JWST NIRCa
 
 setup(
     name="HybPSF",
-    version="0.0.1",
+    version="1.0.0",
     author="JWST_revised team @shao",
     author_email="linn@mail.ustc.edu.cn",
     description=DESCRIPTION,
