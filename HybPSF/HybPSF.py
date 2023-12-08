@@ -1296,7 +1296,7 @@ def _S2N(image,gain=1):
 def _get_webPSF(PCfile,
               psfpos,
               Target_Ng):
-    '''
+    """
     Using the calculated PCs to interpolate the PSF modeling 
 
     parameters
@@ -1312,7 +1312,7 @@ def _get_webPSF(PCfile,
     ------
     np.ndarray:
         the interpolated PSF modeling image matrix using polynomials
-    '''
+    """
     print("in get_webPSF")
     rNstar=6
     tmpname=PCfile.split("/");l0=len(tmpname);l1=len(tmpname[l0-1]);

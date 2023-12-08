@@ -12,42 +12,41 @@ def _Image2PSFmodel(fullfitsname,wdirs,NPCs,SNR_thresh=20,osam=1,stamp_size=80,m
 
     Parameters:
     ----------
-    fdirs: str
-        the file path of the fitsfile
-    fitsname: str
-        the fitsfile name of the fits file
+    fullfitsname : str
+        The full name of the fits file, defaulting to 'fitsfile/name'.
     wdirs: str
         the path to save the selected star stamps
     NPCs: int
         number of PCs, larger than 4 are reommended
-    method: string
-        reconstruction method used 'iSPCA', 'SPCA', 'EMPCA' or 'PCA'
-    S2N: float
+    SNR_thresh: float
         signal to noise ratio threshold for the star images,which will used in PCs calculation
+    osam : int
+        Oversampling factor of PSF model, >1 is recommended.
     stamp_size: int
         the pxiel size of the cutout star stamp images:stamp_size*stamp_size
     magleft: float
         a threshold to select the star images,which are defined log10(flux)
     magright: float
         a threshold to select the star images,which are defined log10(flux)
+    big: int
+        a chose for PSF reconstruction situation
+        0 costructing normal PSF model
+        1 costructing very big model
 
     Returns:
     ----------
-    str:
-        the file name of the PSF model file.
+    str: 
+        the file name of the PSF moddel file.
     """
-def _get_webPSF(PCfile,
-              psfpos,
-              Target_Ng):
-    '''
-    Using the calculated PCs to interpolate the PSF modeling
+"""
+    Using the calculated PCs to interpolate the PSF modeling 
 
     parameters
     ----------
     PCfile: str
         the constructed PC file
     psfpos: np.ndarray
-        the required psf pos which you want, pos can be a 2 dimensional array,such as psfpos[xpos][ypos]
+        the required psf pos which you want, pos can be a 2 dimentional array,such as psfpos[xpos][ypos]
     Target_Ng: int
           the required pixel size of psf stamp
 
@@ -55,7 +54,8 @@ def _get_webPSF(PCfile,
     ------
     np.ndarray:
         the interpolated PSF modeling image matrix using polynomials
-    '''
+    """
+
 The science image fits file should be prepared first,
 There is an test file: jw02736001001_02105_00009_nrcalong_cal.fits in tests
 There also is an usage example of HybPSF: HybPSF using example.html
