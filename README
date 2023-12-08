@@ -1,4 +1,5 @@
-This is PSF reconstruction code for JWST NIRCam image with
+This is PSF reconstruction code for JWST NIRCam image combining WebbPSF with SPCA method
+This code is related with the work:https://doi.org/10.48550/arXiv.2308.14065
 
 Installation:
 python setup.py install
@@ -33,7 +34,7 @@ def _Image2PSFmodel(fullfitsname,wdirs,NPCs,SNR_thresh=20,osam=1,stamp_size=80,m
     Returns:
     ----------
     str:
-        the file name of the PSF moddel file.
+        the file name of the PSF model file.
     """
 def _get_webPSF(PCfile,
               psfpos,
@@ -46,7 +47,7 @@ def _get_webPSF(PCfile,
     PCfile: str
         the constructed PC file
     psfpos: np.ndarray
-        the required psf pos which you want, pos can be a 2 dimentional array,such as psfpos[xpos][ypos]
+        the required psf pos which you want, pos can be a 2 dimensional array,such as psfpos[xpos][ypos]
     Target_Ng: int
           the required pixel size of psf stamp
 
@@ -61,5 +62,6 @@ There also is an usage example of HybPSF: HybPSF using example.html
 
 Attentions: sextractor need to be installed on you platform
 
-Any problem are welcome, you can throw the proplem in the Wechat group of "JWST revised" or send email to linn@mail.ustc.edu.cn
-please cite the work:, if you use this code
+Any problem are welcome,
+you can throw the proplem in the Wechat group of "JWST revised"
+or send email to linn@mail.ustc.edu.cn

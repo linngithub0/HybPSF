@@ -74,24 +74,26 @@ def _Image2PSFmodel(fullfitsname,wdirs,NPCs,SNR_thresh=20,osam=1,
 
     Parameters:
     ----------
-    fdirs: str
-        the file path of the fitsfile
-    fitsname: str
-        the fitsfile name of the fits file
+    fullfitsname : str
+        The full name of the fits file, defaulting to 'fitsfile/name'.
     wdirs: str
         the path to save the selected star stamps
     NPCs: int
         number of PCs, larger than 4 are reommended
-    method: string
-        reconstruction method used 'iSPCA', 'SPCA', 'EMPCA' or 'PCA'
-    S2N: float
+    SNR_thresh: float
         signal to noise ratio threshold for the star images,which will used in PCs calculation
+    osam : int
+        Oversampling factor of PSF model, >1 is recommended.
     stamp_size: int
         the pxiel size of the cutout star stamp images:stamp_size*stamp_size
     magleft: float
         a threshold to select the star images,which are defined log10(flux)
     magright: float
         a threshold to select the star images,which are defined log10(flux)
+    big: int
+        a chose for PSF reconstruction situation
+        0 for samll source
+        1 for very bright source
 
     Returns:
     ----------
@@ -113,7 +115,7 @@ def _Image2PSFmodel(fullfitsname,wdirs,NPCs,SNR_thresh=20,osam=1,
         stamp_name=_pick_psfstars(fdirs,fitsname,wdirs,stamp_size,magleft=magleft,magright=magright)
         stars=fits.open(stamp_name)[0].data
         if stars.shape[0]>NPCs:
-            PCname=_get_PC(wdirs,stamp_name,NPCs=NPCs,method=1,osam=osam,SNR_thresh=SNR_thresh,big)
+            PCname=_get_PC(wdirs,stamp_name,NPCs=NPCs,method=1,osam=osam,SNR_thresh=SNR_thresh,big=big)
             return(PCname)
         else:
             return(0)
@@ -439,7 +441,7 @@ def _get_PC(wdirs,stamp_name,NPCs=10,method=1,osam=1,SNR_thresh=80,big=0):
         wgt=readmask
         if Nobj>6:
             try:
-                fmodel=stamp_name.replace("_star.fits","_model.fits")
+                fmodel=stamp_name.replace("_star.fits","_modelxxxx.fits")
                 imodel=fits.open(fmodel)[0].data
             except:
                 print("generate wmodel",Nobj)

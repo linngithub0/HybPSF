@@ -461,7 +461,7 @@ void webiSPCA_entr(float ***stars,float **spos,int npc,int Nstar0,int Ng0,int Ng
   /*********************************************/
   //only cut the center region to calculate???
   /*********************************************/ 
-  double **new_a,**new_weight,**new_ebasisf,**new_cent;
+  double **new_a,**new_weight,**new_ebasisf,**new_cent,**new_a1;
   double ***new_compbf,**new_compbfr,**wbpsf, *wbcoeff, *wbcoefferr;
   int new_Mp,new_Nk,new_Ng,new_Mpke,new_Nke,dpix=Ng/4,new_Nge;
   //new_Ng=Ng/2;//if((new_Ng%2)==0)new_Ng+=1;
@@ -472,6 +472,7 @@ void webiSPCA_entr(float ***stars,float **spos,int npc,int Nstar0,int Ng0,int Ng
   new_Nge=new_Ng*num;
 
   new_a=dmatrix(0,Nstar,0,new_Mp);
+  new_a1=dmatrix(0,Nstar,0,new_Mp);
   wbpsf=dmatrix(0,Nstar,0,new_Mp);
   wbcoeff=dvector(0,Nstar);
   wbcoefferr=dvector(0,Nstar);
@@ -524,17 +525,18 @@ void webiSPCA_entr(float ***stars,float **spos,int npc,int Nstar0,int Ng0,int Ng
   //write_fits_3D(ftmp,star0,dim);
 
   for(ic=0;ic<Nstar;ic++){
-    sum=0;sumt=0;
+    /*sum=0;sumt=0;
     for(k=0;k<new_Ng*new_Ng;k++){
       sum+=wbpsf[ic][k]*new_a[ic][k]*new_weight[ic][k];
       sumt+=wbpsf[ic][k]*wbpsf[ic][k]*new_weight[ic][k];
     }
     wbcoeff[ic]=sum/sumt;//printf("new coeff:%f\t",wbcoeff[ic]);
+    */
     wbcoeff[ic]=1.;
     for(i=0;i<new_Ng;i++){
       for(j=0;j<new_Ng;j++){
-        star0[ic][i][j]=star[ic][i][j]-wbcoeff[ic]*wbpsf[ic][i*new_Ng+j];
-        //new_a[ic][i*new_Ng+j]=star[ic][i][j]-wbcoeff[ic]*wbpsf[ic][i*new_Ng+j];
+        //star0[ic][i][j]=star[ic][i][j]-wbcoeff[ic]*wbpsf[ic][i*new_Ng+j];
+        new_a1[ic][i*new_Ng+j]=star[ic][i][j]-wbcoeff[ic]*wbpsf[ic][i*new_Ng+j];
       }
     }
   }
@@ -566,11 +568,13 @@ void webiSPCA_entr(float ***stars,float **spos,int npc,int Nstar0,int Ng0,int Ng
       double ***compbf,double **coeff,int Nb,int Nk,int num,double **compbfr,int Ng,
       double **wbpsf,double *wbcoeff);
   if(big==0){
+    printf("fitting for normal star images\n");
     hiSPCA(new_a,new_weight,new_ebasisf,new_Mp,Nstar,nbf,new_cent,
     new_compbf,compcoeff,npc,new_Nk,num,new_compbfr,new_Ng,wbpsf,wbcoeff);
   }
   else{
-    iSPCA(new_a,new_weight,new_ebasisf,new_Mp,Nstar,nbf,new_cent,
+    printf("fitting for very bright star images\n");
+    iSPCA(new_a1,new_weight,new_ebasisf,new_Mp,Nstar,nbf,new_cent,
     new_compbf,compcoeff,npc,new_Nk,num,new_compbfr,new_Ng);
   }
   

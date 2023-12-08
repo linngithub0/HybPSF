@@ -38,13 +38,13 @@ void size(float **I,int Ng,double *cen,double rg,double *se);
 int get_header_key(char *argv,double *keyva,char *keyna);
 void web_psf_fit(float *get_stars,float *get_spos,int npc,int Nstar,int Ng0,int Ng,
   float *get_PCs,float *get_coeff,float gain,int method,int *get_Nobj,int osam,
-  float snrs,float *imodel,float *wgt,float *get_wcoff);
+  float snrs,float *imodel,float *wgt,float *get_wcoff,int big);
 void web_method_branches(float ***stars,float **spos,int npc,int Nstar,int Ng0,int Ng,
   float ***PCs,float ***coeff,float gain,int method,int *Nobj,int osam,
-  float snrs,float ***imdoel,float ***wgt,float **wcoff);
+  float snrs,float ***imdoel,float ***wgt,float **wcoff,int big);
 void webiSPCA_entr(float ***stars,float **spos,int npc,int Nstar0,int Ng0,int Ng,
   float ***PCs,float ***coeff,float gain,int *Nobj,float snrs,int osam,
-  float ***models,float ***wgt, float **wcoff);
+  float ***models,float ***wgt, float **wcoff,int big);
 void webSPCA_entr(float ***stars,float **spos,int npc,int Nstar0,int Ng0,int Ng,
   float ***PCs,float ***coeff,float gain,int *Nobj,float snrs,float ***models,
   float ***wgt);

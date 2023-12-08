@@ -161,7 +161,7 @@ void iSPCA(double **images,double **weight,double **basisf,int Mp,int Nstar,int 
       detchi2=fabs(detchi2);
       sum2=sum1;
       niter++;
-      if(niter%20==0){
+      if(niter%50==0){
         printf("niter=%d detchi2=%e   chi2=%e\n",niter,detchi2,sum1);
       }
 
@@ -463,7 +463,7 @@ void hiSPCA(double **images,double **weight,double **basisf,int Mp,int Nstar,int
       detchi2=fabs(detchi2);
       sum2=sum1;
       niter++;
-      if(niter%20==0){
+      if(niter%50==0){
         printf("niter=%d detchi2=%e   chi2=%e\n",niter,detchi2,sum1);
       }
       
