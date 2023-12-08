@@ -1,0 +1,93 @@
+import os
+import subprocess
+import setuptools
+from setuptools import setup, find_packages, Extension
+from setuptools.command.build_ext import build_ext
+import glob
+
+from distutils.command.install import install
+import platform
+
+system = platform.system()
+
+libdir = os.path.dirname(os.path.abspath(__file__))
+cfitslib=os.path.join(libdir,'HybPSF','lib')
+cfitsinc=os.path.join(libdir,'HybPSF','include')
+psflib=os.path.join(libdir,'HybPSF')
+# Define the extension module
+
+
+class _install(install):
+    def run(self):
+        print('#-------------------------start configuretions for C libraries--------------')
+        os.system('./setup.sh')
+        print('#-------------------------end configuretion---------------\n\n\n')
+
+        print('#-------------------------start make cfitsio lib--------------')
+        subprocess.call(['make', 'clean', '-C', os.path.join('HybPSF', 'cfitsio')])
+        subprocess.call(['make', '-C', os.path.join('HybPSF', 'cfitsio')])
+        subprocess.call(['make', '-C', os.path.join('HybPSF', 'cfitsio'), 'install', '--prefix='+psflib])
+        print('#-------------------------end make cfitsio---------------\n\n\n')
+
+        print('#-------------------------start make psf lib--------------')
+        subprocess.call(['make', 'clean', '-C', os.path.join('HybPSF', 'source')])
+        subprocess.call(['make', '-C', os.path.join('HybPSF', 'source')])
+        subprocess.call(['cp', os.path.join('HybPSF', 'source', 'libpsffit.so'), psflib])
+        print('#-------------------------end make psf---------------\n\n\n')
+
+        print('#-------------------------start make star_extract lib--------------')
+        subprocess.call(['make', 'clean', '-C', os.path.join('HybPSF', 'staridf')])
+        subprocess.call(['make', '-C', os.path.join('HybPSF', 'staridf')])
+        subprocess.call(['cp', os.path.join('HybPSF', 'staridf', 'star_extrac.so'), psflib])
+        print('#-------------------------end make star_extract--------------\n\n\n')
+
+        # Set the DYLD_LIBRARY_PATH environment variable
+        if system == 'Darwin':
+            os.environ['DYLD_LIBRARY_PATH'] = cfitslib
+
+            # Update the library paths using install_name_tool
+            cmd = "install_name_tool -add_rpath " + cfitslib + " " + os.path.join(psflib, 'libpsffit.so')
+            os.system(cmd)
+            cmd = "install_name_tool -add_rpath " + cfitslib + " " + os.path.join(psflib, 'star_extrac.so')
+            os.system(cmd)
+
+        install.run(self)
+
+
+
+
+
+VERSION = '0.0.1' 
+DESCRIPTION = 'PSF module of JWST NIRCam image '
+LONG_DESCRIPTION = 'create Point Spread Function (PSF) module for the JWST NIRCam image image'
+
+
+setup(
+    name="HybPSF",
+    version="0.0.1",
+    author="JWST_revised team @shao",
+    author_email="linn@mail.ustc.edu.cn",
+    description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
+    license='MIT',
+    classifiers= [
+        "Development Status :: beta",
+        "Intended Audience :: Education",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Scientific/Engineering :: Physics",
+        "Topic :: Scientific/Engineering :: Astronomy",
+        "License :: OSI Approved :: MIT License"
+    ],
+    cmdclass={'install': _install},
+    packages=find_packages(),
+    package_dir={'HybPSF':'./HybPSF',
+                     'cfitsio':'./cfitsio',
+                     'config':'./config',
+                     'source':'./source',
+                     'staridf':'./staridf'},
+    package_data={
+        '': ['./*.so'],
+        'HybPSF': ['HybPSF/*.so','config/*', 'include/*', 'lib/*', 'source/*', 'staridf/*'],
+    }
+
+)

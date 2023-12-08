@@ -1,0 +1,6 @@
+scipy==1.11.3
+setuptools==68.0.0
+astropy==5.3.4
+numpy==1.26.1
+matplotlib==3.7.2
+webbpsf

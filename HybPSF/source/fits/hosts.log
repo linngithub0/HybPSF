@@ -1,0 +1,270 @@
+This is TeX, Version 3.14159265 (TeX Live 2018) (preloaded format=tex 2018.8.10)  6 OCT 2022 16:03
+**/etc/hosts
+(/etc/hosts
+! You can't use `macro parameter character #' in vertical mode.
+l.1 #
+      Copyright (c) 2017-2020, googlehosts members.
+? 
+! Interruption.
+<to be read again> 
+                    
+l.1 # 
+      Copyright (c) 2017-2020, googlehosts members.
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.2 #
+      https://github.com/googlehosts/hosts
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.3 #
+      Last updated: 2020-02-03
+? 
+! You can't use `macro parameter character #' in vertical mode.
+l.5 #
+      This work is licensed under a modified HOSTS License.
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.6 #
+      https://github.com/googlehosts/hosts/raw/master/LICENSE
+? 
+
+Overfull \hbox (63.50415pt too wide) in paragraph at lines 5--7
+[]\tenrm This work is li-censed un-der a mod-i-fied HOSTS Li-cense.  https://gi
+thub.com/googlehosts/hosts/raw/master/LICENSE |
+
+\hbox(7.5+2.5)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm T
+.\tenrm h
+.\tenrm i
+.\tenrm s
+.etc.
+
+! You can't use `macro parameter character #' in vertical mode.
+l.8 #
+      Modified Hosts Start
+? 
+! You can't use `macro parameter character #' in vertical mode.
+l.10 #
+       Localhost (DO NOT REMOVE) Start
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.15 #
+       Localhost (DO NOT REMOVE) End
+? 
+! You can't use `macro parameter character #' in vertical mode.
+l.17 #
+       GitHub520 Host Start
+? 
+
+Overfull \hbox (71.12126pt too wide) in paragraph at lines 17--57
+[]\tenrm GitHub520 Host Start 140.82.112.3 alive.github.com 140.82.112.3 live.g
+ithub.com 35.175.146.196 github.githubassets.com|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm G
+.\tenrm i
+.\tenrm t
+.\tenrm H
+.etc.
+
+
+Overfull \hbox (23.07947pt too wide) in paragraph at lines 17--57
+\tenrm 140.82.112.3 cen-tral.github.com 199.232.68.133 desk-top.githubuserconte
+nt.com 140.82.112.3 assets-cdn.github.com|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 1
+.\tenrm 4
+.\tenrm 0
+.\tenrm .
+.\tenrm 8
+.etc.
+
+
+Overfull \hbox (30.82959pt too wide) in paragraph at lines 17--57
+\tenrm 199.232.68.133 camo.githubusercontent.com 151.101.1.6 github.map.fastly.
+net 151.101.1.6 github.global.ssl.fastly.net|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 1
+.\tenrm 9
+.\tenrm 9
+.\tenrm .
+.\tenrm 2
+.etc.
+
+
+Overfull \hbox (23.07965pt too wide) in paragraph at lines 17--57
+\tenrm 140.82.112.3 gist.github.com 185.199.108.153 github.io 140.82.112.3 gith
+ub.com 192.0.66.2 github.blog 140.82.112.3|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 1
+.\tenrm 4
+.\tenrm 0
+.\tenrm .
+.\tenrm 8
+.etc.
+
+
+Overfull \hbox (3.0517pt too wide) in paragraph at lines 17--57
+\tenrm 199.232.68.133 fav-i-cons.githubusercontent.com 199.232.68.133 avatars5.
+githubusercontent.com 199.232.68.133|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 1
+.\tenrm 9
+.\tenrm 9
+.\tenrm .
+.\tenrm 2
+.etc.
+
+
+Overfull \hbox (78.8018pt too wide) in paragraph at lines 17--57
+\tenrm avatars4.githubusercontent.com 199.232.68.133 avatars3.githubusercontent
+.com 199.232.68.133 avatars2.githubusercontent.com|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm a
+.\kern-0.27779
+.\tenrm v
+.\kern-0.55556
+.\tenrm a
+.etc.
+
+
+Overfull \hbox (4.46837pt too wide) in paragraph at lines 17--57
+\tenrm 199.232.68.133 avatars1.githubusercontent.com 199.232.68.133 avatars0.gi
+thubusercontent.com 199.232.68.133|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 1
+.\tenrm 9
+.\tenrm 9
+.\tenrm .
+.\tenrm 2
+.etc.
+
+
+Overfull \hbox (6.91278pt too wide) in paragraph at lines 17--57
+\tenrm avatars.githubusercontent.com 140.82.112.3 code-load.github.com 72.21.20
+6.80 github-cloud.s3.amazonaws.com|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm a
+.\kern-0.27779
+.\tenrm v
+.\kern-0.55556
+.\tenrm a
+.etc.
+
+
+Overfull \hbox (30.13496pt too wide) in paragraph at lines 17--57
+\tenrm 72.21.206.80 github-com.s3.amazonaws.com 72.21.206.80 github-production-
+release-asset-2e65be.s3.amazonaws.com|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 7
+.\tenrm 2
+.\tenrm .
+.\tenrm 2
+.\tenrm 1
+.etc.
+
+
+Overfull \hbox (14.05167pt too wide) in paragraph at lines 17--57
+\tenrm 72.21.206.80 github-production-user-asset-6210df.s3.amazonaws.com 72.21.
+206.80 github-production-repository-|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm 7
+.\tenrm 2
+.\tenrm .
+.\tenrm 2
+.\tenrm 1
+.etc.
+
+
+Overfull \hbox (10.4684pt too wide) in paragraph at lines 17--57
+\tenrm file-5c1aeb.s3.amazonaws.com 185.199.108.153 github-sta-tus.com 140.82.1
+14.18 github.community 52.224.38.193|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm ^^L (ligature fi)
+.\tenrm l
+.\tenrm e
+.\tenrm -
+.\discretionary
+.etc.
+
+
+Overfull \hbox (28.52397pt too wide) in paragraph at lines 17--57
+\tenrm github.dev 140.82.112.3 col-lec-tor.github.com 199.232.68.133 pipelines.
+actions.githubusercontent.com 199.232.68.133|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm g
+.\tenrm i
+.\tenrm t
+.\tenrm h
+.\kern-0.27779
+.etc.
+
+
+Overfull \hbox (50.5517pt too wide) in paragraph at lines 17--57
+\tenrm me-dia.githubusercontent.com 199.232.68.133 cloud.githubusercontent.com 
+199.232.68.133 ob-jects.githubusercontent.com|
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\tenrm m
+.\tenrm e
+.\discretionary
+..\tenrm -
+.\tenrm d
+.\tenrm i
+.etc.
+
+! You can't use `macro parameter character #' in vertical mode.
+l.59 #
+       Update time: 2022-09-20T14:26:59+08:00
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.60 #
+       Update url: https://raw.hellogithub.com/hosts
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.61 #
+       Star me: https://github.com/521xueweihan/GitHub520
+? 
+! You can't use `macro parameter character #' in horizontal mode.
+l.62 #
+       GitHub520 Host End
+? 
+)
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*
+(Please type a command or say `\end')
+*\end
+[1]
+Output written on hosts.dvi (1 page, 2948 bytes).
