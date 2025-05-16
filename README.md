@@ -33,4 +33,4 @@ Attentions: sextractor need to be installed on you platform, and the commmand of
 code in gen_cat.py of line 63 and 69
 
 any problem are welcome, you can throw the proplem in the Wechat group of "JWST revised"
-or send email to linn@mail.ustc.edu.cn
+or send email to linn@shao.ac.cn
